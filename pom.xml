@@ -8,10 +8,10 @@
 		<version>2.6.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.appsdeveloperblog.app.ws</groupId>
-	<artifactId>mobile-app-ws</artifactId>
+	<groupId>com.api.ws</groupId>
+	<artifactId>api-ws</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>mobile-app-ws</name>
+	<name>api-ws</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
