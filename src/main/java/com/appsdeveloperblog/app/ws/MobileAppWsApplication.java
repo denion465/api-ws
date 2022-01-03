@@ -1,5 +1,7 @@
 package com.appsdeveloperblog.app.ws;
 
+import com.appsdeveloperblog.app.ws.security.AppProperties;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -14,5 +16,15 @@ public class MobileAppWsApplication {
   @Bean
   public BCryptPasswordEncoder bcryptPasswordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  public SpringApplicationContext springApplicationContext() {
+    return  new SpringApplicationContext();
+  }
+
+  @Bean(name="AppProperties")
+  public AppProperties getAppProperties() {
+    return new AppProperties();
   }
 }
