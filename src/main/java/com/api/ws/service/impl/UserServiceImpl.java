@@ -2,6 +2,7 @@ package com.api.ws.service.impl;
 
 import java.util.ArrayList;
 
+import com.api.ws.exceptions.UserServiceException;
 import com.api.ws.io.entity.UserEntity;
 import com.api.ws.io.repositories.UserRepository;
 import com.api.ws.service.UserService;
@@ -77,6 +78,23 @@ public class UserServiceImpl implements UserService {
     if (userEntity == null) throw new UsernameNotFoundException(userId);
 
     BeanUtils.copyProperties(userEntity, returnValue);
+
+    return returnValue;
+  }
+
+  @Override
+  public UserDto updateUser(String userId, UserDto user) {
+    UserDto returnValue = new UserDto();
+    UserEntity userEntity = userRepository.findByUserId(userId);
+
+    if (userEntity == null) throw new UserServiceException(userId);
+
+    userEntity.setFirstName(user.getFirstName());
+    userEntity.setLastName(user.getLastName());
+
+    UserEntity updatedUserDetails = userRepository.save(userEntity);
+
+    BeanUtils.copyProperties(updatedUserDetails, returnValue);
 
     return returnValue;
   }
