@@ -3,6 +3,9 @@ package com.api.ws.ui.controller;
 import com.api.ws.service.UserService;
 import com.api.ws.shared.dto.UserDto;
 import com.api.ws.ui.model.request.UserDetailsRequestModel;
+import com.api.ws.ui.model.response.OperationStatusModel;
+import com.api.ws.ui.model.response.RequestOperationName;
+import com.api.ws.ui.model.response.RequestOperationStatus;
 import com.api.ws.ui.model.response.UserRest;
 
 import org.springframework.beans.BeanUtils;
@@ -58,8 +61,16 @@ public class UserController {
     return returnValue;
   }
 
-  @DeleteMapping
-  public String deleteUser() {
-    return "delete user was called";
+  @DeleteMapping("/{id}")
+  public OperationStatusModel deleteUser(@PathVariable String id) {
+    OperationStatusModel returnValue = new OperationStatusModel();
+
+    returnValue.setOperationName(RequestOperationName.DELETE.name());
+
+    userService.deleteUser(id);
+
+    returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+
+    return returnValue;
   }
 }
