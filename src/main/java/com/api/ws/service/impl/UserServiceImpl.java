@@ -48,8 +48,8 @@ public class UserServiceImpl implements UserService {
       user.getAddresses().set(i, address);
     }
 
-    UserEntity userEntity = new UserEntity();
-    BeanUtils.copyProperties(user, userEntity);
+    ModelMapper modelMapper = new ModelMapper();
+    UserEntity userEntity = modelMapper.map(user, UserEntity.class);
 
     String publicUserId = utils.generateUserId(30);
     userEntity.setUserId(publicUserId);
@@ -57,7 +57,6 @@ public class UserServiceImpl implements UserService {
 
     UserEntity storedUserDetails = userRepository.save(userEntity);
 
-    ModelMapper modelMapper = new ModelMapper();
     UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
 
     return returnValue;

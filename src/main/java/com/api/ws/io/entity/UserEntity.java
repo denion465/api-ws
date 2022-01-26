@@ -42,7 +42,7 @@ public class UserEntity implements Serializable {
   private List<AddressEntity> addresses;
 
   public long getId() {
-    return this.id;
+    return id;
   }
 
   public void setId(long id) {
@@ -50,7 +50,7 @@ public class UserEntity implements Serializable {
   }
 
   public String getUserId() {
-    return this.userId;
+    return userId;
   }
 
   public void setUserId(String userId) {
@@ -58,7 +58,7 @@ public class UserEntity implements Serializable {
   }
 
   public String getFirstName() {
-    return this.firstName;
+    return firstName;
   }
 
   public void setFirstName(String firstName) {
@@ -66,7 +66,7 @@ public class UserEntity implements Serializable {
   }
 
   public String getLastName() {
-    return this.lastName;
+    return lastName;
   }
 
   public void setLastName(String lastName) {
@@ -74,7 +74,7 @@ public class UserEntity implements Serializable {
   }
 
   public String getEmail() {
-    return this.email;
+    return email;
   }
 
   public void setEmail(String email) {
@@ -82,7 +82,7 @@ public class UserEntity implements Serializable {
   }
 
   public String getEncryptedPassword() {
-    return this.encryptedPassword;
+    return encryptedPassword;
   }
 
   public void setEncryptedPassword(String encryptedPassword) {
@@ -90,22 +90,26 @@ public class UserEntity implements Serializable {
   }
 
   public String getEmailVerificationToken() {
-    return this.emailVerificationToken;
+    return emailVerificationToken;
   }
 
   public void setEmailVerificationToken(String emailVerificationToken) {
     this.emailVerificationToken = emailVerificationToken;
   }
 
-  public Boolean isEmailVerificationStatus() {
-    return this.emailVerificationStatus;
-  }
-
   public Boolean getEmailVerificationStatus() {
-    return this.emailVerificationStatus;
+    return emailVerificationStatus;
   }
 
   public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
     this.emailVerificationStatus = emailVerificationStatus;
+  }
+
+  public List<AddressEntity> getAddresses() {
+    return addresses;
+  }
+
+  public void setAddresses(List<AddressEntity> addresses) {
+    this.addresses = addresses;
   }
 }
