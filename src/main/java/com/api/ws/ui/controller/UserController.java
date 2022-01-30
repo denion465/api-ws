@@ -2,10 +2,12 @@ package com.api.ws.ui.controller;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import com.api.ws.service.AddressService;
 import com.api.ws.service.UserService;
+import com.api.ws.shared.Roles;
 import com.api.ws.shared.dto.AddressDto;
 import com.api.ws.shared.dto.UserDto;
 import com.api.ws.ui.model.request.UserDetailsRequestModel;
@@ -15,6 +17,9 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,6 +57,7 @@ public class UserController {
       return returnValue;
   }
 
+  @PostAuthorize("hasRole('ADMIN') or returnObject.userId == principal.userId")
   @GetMapping("/{id}")
   public UserRest getUser(@PathVariable String id) {
     UserRest returnValue = new UserRest();
@@ -68,6 +74,7 @@ public class UserController {
 
     ModelMapper modelMapper = new ModelMapper();
     UserDto userDto = modelMapper.map(userDetails, UserDto.class);
+    userDto.setRoles(new HashSet<>(List.of(Roles.ROLE_USER.name())));
 
     UserDto createUser = userService.createUser(userDto);
     returnValue = modelMapper.map(createUser, UserRest.class);
@@ -88,6 +95,8 @@ public class UserController {
     return returnValue;
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.userId")
+  //@PreAuthorize("hasAuthority('DELETE_AUTHORITY')")
   @DeleteMapping("/{id}")
   public OperationStatusModel deleteUser(@PathVariable String id) {
     OperationStatusModel returnValue = new OperationStatusModel();

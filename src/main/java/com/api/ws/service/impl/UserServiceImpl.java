@@ -1,11 +1,16 @@
 package com.api.ws.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import com.api.ws.exceptions.UserServiceException;
+import com.api.ws.io.entity.RoleEntity;
 import com.api.ws.io.entity.UserEntity;
+import com.api.ws.io.repositories.RoleRepository;
 import com.api.ws.io.repositories.UserRepository;
+import com.api.ws.security.UserPrincipal;
 import com.api.ws.service.UserService;
 import com.api.ws.shared.Utils;
 import com.api.ws.shared.dto.AddressDto;
@@ -35,6 +40,9 @@ public class UserServiceImpl implements UserService {
   @Autowired
   BCryptPasswordEncoder bcryptPasswordEncoder;
 
+  @Autowired
+  RoleRepository roleRepository;
+
   @Override
   public UserDto createUser(UserDto user) {
 
@@ -55,6 +63,19 @@ public class UserServiceImpl implements UserService {
     userEntity.setUserId(publicUserId);
     userEntity.setEncryptedPassword(bcryptPasswordEncoder.encode(user.getPassword()));
 
+    // Set roles
+    Collection<RoleEntity> roleEntities = new HashSet<>();
+
+    for (String role : user.getRoles()) {
+      RoleEntity roleEntity = roleRepository.findByName(role);
+
+      if (roleEntity != null) {
+        roleEntities.add(roleEntity);
+      }
+    }
+
+    userEntity.setRoles(roleEntities);
+
     UserEntity storedUserDetails = userRepository.save(userEntity);
 
     UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
@@ -68,7 +89,9 @@ public class UserServiceImpl implements UserService {
 
     if (userEntity == null) throw new UsernameNotFoundException(email);
 
-    return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), new ArrayList<>());
+    return new UserPrincipal(userEntity);
+
+//    return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), new ArrayList<>());
   }
 
   @Override
